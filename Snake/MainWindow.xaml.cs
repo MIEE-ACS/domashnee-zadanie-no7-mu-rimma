@@ -28,6 +28,8 @@ namespace Snake
         List<PositionedEntity> snake;
         // яблоко
         Apple apple;
+        // приманка
+        Apple apple1;
         //количество очков
         int score;
         //таймер по которому 
@@ -62,7 +64,11 @@ namespace Snake
             //обновляем положение яблока
             Canvas.SetTop(apple.image, apple.y);
             Canvas.SetLeft(apple.image, apple.x);
-            
+
+            //обновляем положение приманки
+            Canvas.SetTop(apple1.image, apple1.y);
+            Canvas.SetLeft(apple1.image, apple1.x);
+
             //обновляем количество очков
             lblScore.Content = String.Format("{0}000", score);
         }
@@ -105,10 +111,20 @@ namespace Snake
                 score++;
                 //двигаем яблоко на новое место
                 apple.move();
+                //apple1.move();
                 // добавляем новый сегмент к змее
                 var part = new BodyPart(snake.Last());
                 canvas1.Children.Add(part.image);
                 snake.Add(part);
+            }
+            //проверяем, что голова змеи врезалась в приманку
+            if (head.x == apple1.x && head.y == apple1.y)
+            {
+                //уменьшаем счет
+                score = score - 100;
+                //двигаем приманку на новое место
+                apple1.move();
+                apple.move();
             }
             //перерисовываем экран
             UpdateField();
@@ -151,6 +167,9 @@ namespace Snake
             // создаем новое яблоко и добавлем его
             apple = new Apple(snake);
             canvas1.Children.Add(apple.image);
+            // создаем новое яблоко и добавлем его
+            apple1 = new Apple(snake);
+            canvas1.Children.Add(apple1.image);
             // создаем голову
             head = new Head();
             snake.Add(head);
