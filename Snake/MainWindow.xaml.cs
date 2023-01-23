@@ -29,7 +29,7 @@ namespace Snake
         // яблоко
         Apple apple;
         // приманка
-        Apple apple1;
+        Apple1 apple1;
         //количество очков
         int score;
         //таймер по которому 
@@ -117,14 +117,14 @@ namespace Snake
                 canvas1.Children.Add(part.image);
                 snake.Add(part);
             }
-            //проверяем, что голова змеи врезалась в приманку
-            if (head.x == apple1.x && head.y == apple1.y)
+            else
             {
-                //уменьшаем счет
-                score = score - 10;
-                //двигаем приманку на новое место
-                apple1.move();
-                apple.move();
+                if (head.x == apple1.x && head.y == apple1.y)
+                {
+                    score = score - 10;
+                    apple1.move();
+                    apple.move();
+                }
             }
             //перерисовываем экран
             UpdateField();
@@ -168,7 +168,7 @@ namespace Snake
             apple = new Apple(snake);
             canvas1.Children.Add(apple.image);
             // создаем новое яблоко и добавлем его
-            apple1 = new Apple(snake);
+            apple1 = new Apple1(snake);
             canvas1.Children.Add(apple1.image);
             // создаем голову
             head = new Head();
@@ -249,6 +249,39 @@ namespace Snake
         {
             List<PositionedEntity> m_snake;
             public Apple(List<PositionedEntity> s)
+                : base(0, 0, 40, 40, "pack://application:,,,/Resources/fruit.png")
+            {
+                m_snake = s;
+                move();
+            }
+
+            public override void move()
+            {
+                Random rand = new Random();
+                do
+                {
+                    x = rand.Next(13) * 40 + 40;
+                    y = rand.Next(13) * 40 + 40;
+                    bool overlap = false;
+                    foreach (var p in m_snake)
+                    {
+                        if (p.x == x && p.y == y)
+                        {
+                            overlap = true;
+                            break;
+                        }
+                    }
+                    if (!overlap)
+                        break;
+                } while (true);
+
+            }
+        }
+
+        public class Apple1 : PositionedEntity
+        {
+            List<PositionedEntity> m_snake;
+            public Apple1(List<PositionedEntity> s)
                 : base(0, 0, 40, 40, "pack://application:,,,/Resources/fruit.png")
             {
                 m_snake = s;
