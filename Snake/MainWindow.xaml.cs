@@ -111,7 +111,7 @@ namespace Snake
                 score++;
                 //двигаем яблоко на новое место
                 apple.move();
-                //apple1.move();
+                apple1.move();
                 // добавляем новый сегмент к змее
                 var part = new BodyPart(snake.Last());
                 canvas1.Children.Add(part.image);
@@ -121,7 +121,7 @@ namespace Snake
             if (head.x == apple1.x && head.y == apple1.y)
             {
                 //уменьшаем счет
-                score = score - 100;
+                score = score - 10;
                 //двигаем приманку на новое место
                 apple1.move();
                 apple.move();
